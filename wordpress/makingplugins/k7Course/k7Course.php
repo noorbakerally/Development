@@ -14,6 +14,22 @@ function course_display($course)
    extract(shortcode_atts(array('course' => 'course'), $course));
    global $wpdb;
    //skip,show
+   $html="<ul>";
+
+      
+   if ($course=='all')
+   {
+     $result=mysql_query("select course_name,starting_date,link from wp_courses order by starting_date ASC");
+     while ($row=mysql_fetch_array($result))
+     {
+	$courseDate=date("d F",strtotime($row[1]));
+	$html.="<li><a href=$row[2]>".$row[0]."</a> (starting on ".$courseDate." )</li>";
+     }
+     $html.="</ul>";
+     return $html;
+   }
+   
+
    $result=mysql_query("select course_name,starting_date from wp_courses order by starting_date ASC limit $course,1");
    $courseData=mysql_fetch_array($result);
    $courseName=$courseData[0];
@@ -25,7 +41,7 @@ function course_management_install()
 	global $wpdb;
 	$table_name = $wpdb->prefix . "courses";
 	require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-	$sql = "CREATE TABLE $table_name ( id MEDIUMINT NOT NULL AUTO_INCREMENT primary key,course_name VARCHAR(70) DEFAULT '' NOT NULL,starting_date date);";
+	$sql = "CREATE TABLE $table_name ( id MEDIUMINT NOT NULL AUTO_INCREMENT primary key,course_name VARCHAR(70) DEFAULT '' NOT NULL,link text,starting_date date);";
 	dbDelta($sql);
 }
 
@@ -61,12 +77,14 @@ function course_html_page() {
 <table border=1 width=600 id="table_courses">
 	<tr>
 		<th>Course</th>
-		<th>Date</th>
+		<th>Date(yyyy-mm-dd)</th>
+		<th>Link</th>
 		<th>Controls</th>
 	</tr>
 	<tr>
 		<td align="center"><input id="courseName" type="text" size=40/></td>
 		<td align="center"><input id="date" type="text" size=40/></td>
+	        <td align="center"><input id="link" type="text" size=40/></td>	
 	        <td align="center"><button onClick="add()">Add New</button></td>	
 	</tr>	
  
@@ -78,6 +96,7 @@ function course_html_page() {
 		<tr id="tr<?php echo $rowId; ?>">
 			<td align="center"><?php echo $row->course_name; ?></td>
 			<td align="center"><?php echo $row->starting_date; ?></td>
+			<td align="center"><?php echo $row->link; ?></td>
 			<td align="center"><button onClick="del('<?php echo $row->id;?>','<?php echo $rowId;?>')">Delete</button></td>
 		</tr>
 	<?php
@@ -107,13 +126,14 @@ function my_action_javascript() {
 	
 	function add()
 	{
-		var data = {action: 'my_action',status: "add",courseName:$("#courseName").val(),startingDate:$("#date").val()};
-		$.post(ajaxurl, data, function(response) 
+	    var data = {action: 'my_action',status: "add",courseName:$("#courseName").val(),startingDate:$("#date").val(),link:$("#link").val()};
+            $.post(ajaxurl, data, function(response) 
 		{
 			if (response) alert('Courses added');
-			$('#table_courses tr:last').after('<tr><td align="center">'+$("#courseName").val()+'</td><td align="center">'+$("#date").val()+'</td><td>Reload to delete</td></tr>');
+			$('#table_courses tr:last').after('<tr><td align="center">'+$("#courseName").val()+'</td><td align="center">'+$("#date").val()+'</td><td align="center">'+$("#link").val()+'</td><td>Reload to delete</td></tr>');
 			$("#courseName").val("");
 			$("#date").val("");
+			$("#link").val("");
 		});
 	}
 
@@ -129,7 +149,8 @@ function my_action_callback() {
 	{
 		$courseName=$_POST['courseName'];
 		$startingDate=$_POST['startingDate'];
-		$row=$wpdb->query("insert into wp_courses (course_name,starting_date) values ('$courseName','$startingDate')");
+		$link=$_POST['link'];
+		$row=$wpdb->query("insert into wp_courses (course_name,starting_date,link) values ('$courseName','$startingDate','$link')");
 		echo $row;
 	}
 	else if ($status=='delete')
