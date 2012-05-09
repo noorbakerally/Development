@@ -11,7 +11,8 @@ Function Requirement
 -users can share the product on their wall
 -users can rate the product
 
-
-
+Instructions
+============
+-in WordPress, when using nextgen gallery, yum install php-gd
 
 
