@@ -1,0 +1,12 @@
+{
+  "name": "Remove Facebook Panel",
+  "version": "1.0",
+  "description": "Remove facebook panel from your browser",
+  "permissions": ["tabs", "*://*.google.com/*"],
+  "content_scripts": [
+    {
+      "matches": ["*://*.google.com/*"],
+      "js": ["rem.js"]
+    }
+  ]
+}

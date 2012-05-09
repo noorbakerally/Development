@@ -1,0 +1,43 @@
+td,div,select,input[type=button]
+{
+	color:black;
+}
+
+#titleContent
+{
+	font-size:18px;
+	font-weight:bold;
+}
+
+#sidebar
+{
+   	width:150px;
+   	float:left;
+	margin-right:10px;
+}
+
+#content
+{
+   	width:550px;
+   	border-color:#D8DFEA;
+	margin:4px 0px 0px 160px;
+ 	padding-top:2px;	
+}
+
+.sidebarItems
+{
+	padding-right: 20px;
+	background-color:#D8DFEA;
+	margin: 4px 0px 4px 0px;
+	padding: 2px 2px 2px 2px;
+	cursor:pointer;
+	font-weight:bold;
+}
+
+.sidebarItems:hover
+{
+	background-color:#666666;
+	color:white !important;
+}
+
+

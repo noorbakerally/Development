@@ -1,0 +1,18 @@
+Info
+===
+This application will allow users to display information about products they want to sell
+on facebook.
+
+Function Requirement
+====================
+-View information about a particular product
+-Search for products
+-upload a particular product and pictures of the product
+-users can share the product on their wall
+-users can rate the product
+
+Instructions
+============
+-in WordPress, when using nextgen gallery, yum install php-gd
+
+

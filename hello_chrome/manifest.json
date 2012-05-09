@@ -1,0 +1,12 @@
+{
+  "name": "Remove FB Panel",
+  "version": "1.0",
+  "description": "Remove FB Panel",
+  "permissions": ["tabs", "*://*.facebook.com/*"],
+  "content_scripts": [
+    {
+      "matches": ["*://*.facebook.com/*"],
+      "js": ["hello.js"]
+    }
+  ]
+}
